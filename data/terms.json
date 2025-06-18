@@ -1,0 +1,212 @@
+[
+  {
+    "term": "renderman",
+    "clue": "pixar's proprietary rendering software used to generate final images from 3d scenes.",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "rendering",
+    "clue": "the process of generating a final image from 3d data, including light, shadow, and motion.",
+    "category": "vfx",
+    "difficulty": 1
+  },
+  {
+    "term": "shader",
+    "clue": "a tool that defines the surface appearance of 3d objects, including skin, metal, or glass.",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "subdivision",
+    "clue": "a modeling technique that smooths polygon edges by dividing them into finer geometry.",
+    "category": "modeling",
+    "difficulty": 2
+  },
+  {
+    "term": "ray tracing",
+    "clue": "a rendering technique that simulates how light bounces to produce reflections and shadows.",
+    "category": "vfx",
+    "difficulty": 3
+  },
+  {
+    "term": "simulation",
+    "clue": "automated animation of elements like hair, cloth, or water based on physics.",
+    "category": "animation",
+    "difficulty": 1
+  },
+  {
+    "term": "photorealism",
+    "clue": "the goal of rendering that aims for images indistinguishable from real life.",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "fizt",
+    "clue": "a simulation engine created to animate fur and hair automatically based on physics.",
+    "category": "tool",
+    "difficulty": 3
+  },
+  {
+    "term": "transblurrency",
+    "clue": "a shading system that mimics blurry translucency like jellyfish membranes.",
+    "category": "shading",
+    "difficulty": 3
+  },
+  {
+    "term": "goo",
+    "clue": "pixar\u2019s internal rigging tool for realistic muscle and skin deformation.",
+    "category": "rigging",
+    "difficulty": 3
+  },
+  {
+    "term": "gummi",
+    "clue": "a lighting model that simulates light passing through translucent food items.",
+    "category": "lighting",
+    "difficulty": 3
+  },
+  {
+    "term": "tessendorf",
+    "clue": "an ocean simulation algorithm used for choppy waves in \u201ccars 2.\u201d",
+    "category": "simulation",
+    "difficulty": 3
+  },
+  {
+    "term": "rig",
+    "clue": "a digital skeleton that allows 3d characters to move in animation.",
+    "category": "animation",
+    "difficulty": 1
+  },
+  {
+    "term": "muscle rig",
+    "clue": "a setup that mimics how skin and muscles deform when a character moves.",
+    "category": "rigging",
+    "difficulty": 2
+  },
+  {
+    "term": "cloth system",
+    "clue": "a simulation framework used to create and animate garments realistically.",
+    "category": "simulation",
+    "difficulty": 2
+  },
+  {
+    "term": "virtual camera",
+    "clue": "a digital tool that mimics real-world cinematography inside 3d software.",
+    "category": "cinema",
+    "difficulty": 2
+  },
+  {
+    "term": "steadicam",
+    "clue": "a reference for smooth, stable camera motion used in cg animation.",
+    "category": "cinema",
+    "difficulty": 2
+  },
+  {
+    "term": "handheld feel",
+    "clue": "a stylistic camera approach that adds realism by simulating operator movement.",
+    "category": "cinema",
+    "difficulty": 1
+  },
+  {
+    "term": "subsurface scattering",
+    "clue": "a lighting effect that simulates how light enters a surface and scatters inside (used for skin and food).",
+    "category": "lighting",
+    "difficulty": 3
+  },
+  {
+    "term": "optical light path",
+    "clue": "the path light takes through a transparent or translucent material in rendering.",
+    "category": "vfx",
+    "difficulty": 3
+  },
+  {
+    "term": "taz",
+    "clue": "a simulator developed to handle merida\u2019s 1,500 curls and simulate curly hair physics.",
+    "category": "simulation",
+    "difficulty": 3
+  },
+  {
+    "term": "colored shadows",
+    "clue": "a lighting technique used to simulate the way curly hair transmits and scatters light.",
+    "category": "lighting",
+    "difficulty": 3
+  },
+  {
+    "term": "global illumination",
+    "clue": "a lighting system that simulates how light bounces and scatters in a scene based on real-world physics.",
+    "category": "lighting",
+    "difficulty": 2
+  },
+  {
+    "term": "scare lights",
+    "clue": "special lighting setups used in 'monsters university' to enhance spooky scenes.",
+    "category": "lighting",
+    "difficulty": 1
+  },
+  {
+    "term": "geolight",
+    "clue": "a lighting tool that turns characters into mobile light sources, used to make joy glow in 'inside out'.",
+    "category": "lighting",
+    "difficulty": 2
+  },
+  {
+    "term": "volumetric clouds",
+    "clue": "3d clouds made of particles that can be lit and moved in scenes like characters.",
+    "category": "simulation",
+    "difficulty": 2
+  },
+  {
+    "term": "cloud lego parts",
+    "clue": "modular volumetric cloud components used to build realistic skies in 'the good dinosaur'.",
+    "category": "simulation",
+    "difficulty": 2
+  },
+  {
+    "term": "curve function",
+    "clue": "a technique used to control flexible motion in characters like hank\u2019s tentacles.",
+    "category": "animation",
+    "difficulty": 3
+  },
+  {
+    "term": "bump roughness mapping",
+    "clue": "a method to preserve texture detail at different distances by simulating surface roughness.",
+    "category": "texturing",
+    "difficulty": 2
+  },
+  {
+    "term": "continuous collision detection",
+    "clue": "a system that helps cloth avoid intersecting with complex skeletons in real time.",
+    "category": "simulation",
+    "difficulty": 3
+  },
+  {
+    "term": "3d uv-scaling",
+    "clue": "a technique that preserves cloth texture detail during stretching and compression.",
+    "category": "texturing",
+    "difficulty": 2
+  },
+  {
+    "term": "finger contact rig",
+    "clue": "a specialized rig that calculates realistic key movement based on finger position.",
+    "category": "rigging",
+    "difficulty": 3
+  },
+  {
+    "term": "volumetric sim",
+    "clue": "a simulation approach for soft or unstructured materials like stuffing.",
+    "category": "simulation",
+    "difficulty": 2
+  },
+  {
+    "term": "hybrid rig",
+    "clue": "a rig that combines animation and simulation to control different body parts.",
+    "category": "rigging",
+    "difficulty": 2
+  },
+  {
+    "term": "transformation rig",
+    "clue": "a rig that allows animators to control where and how a character transforms in real time.",
+    "category": "rigging",
+    "difficulty": 2
+  }
+]
