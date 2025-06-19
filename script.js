@@ -81,45 +81,47 @@ function buildGrid(w1, w2, w3) {
   let connected = false;
 
   if (inter13) {
-    // word3 placed horizontally, intersecting vertical word1
     const yOfShared = centerY - inter12.w1Index + inter13.w1Index;
-    let finalY = yOfShared;
-
-    if (Math.abs(finalY - centerY) <= 1) {
-      finalY = finalY < centerY ? centerY - 2 : centerY + 2;
-    }
-
+    let yStart = yOfShared;
     const xStart = centerX - inter13.w2Index;
 
+    // check if full row of word3 is too close to word2 (horizontal at centerY)
+    const word3RangeY = yStart;
+    const distanceToWord2 = Math.abs(word3RangeY - centerY);
+    if (distanceToWord2 <= 1) {
+        yStart = word3RangeY < centerY ? centerY - 2 : centerY + 2;
+    }
+
     for (let i = 0; i < word3.length; i++) {
-      const x = xStart + i;
-      const y = finalY;
-      const key = `${x},${y}`;
-      if (layout[key] && layout[key] !== word3[i]) return null;
-      layout[key] = word3[i];
-      if (i === inter13.w2Index) connected = true;
+        const x = xStart + i;
+        const y = yStart;
+        const key = `${x},${y}`;
+        if (layout[key] && layout[key] !== word3[i]) return null;
+        layout[key] = word3[i];
+        if (i === inter13.w2Index) connected = true;
     }
 
-  } else if (inter23) {
-    // word3 placed vertically, intersecting horizontal word2
+    } else if (inter23) {
     const xOfShared = centerX - inter12.w2Index + inter23.w1Index;
-    let finalX = xOfShared;
-
-    if (Math.abs(finalX - centerX) <= 1) {
-      finalX = finalX < centerX ? centerX - 2 : centerX + 2;
-    }
-
+    let xStart = xOfShared;
     const yStart = centerY - inter23.w2Index;
 
-    for (let i = 0; i < word3.length; i++) {
-      const x = finalX;
-      const y = yStart + i;
-      const key = `${x},${y}`;
-      if (layout[key] && layout[key] !== word3[i]) return null;
-      layout[key] = word3[i];
-      if (i === inter23.w2Index) connected = true;
+    // check if full column of word3 is too close to word1 (vertical at centerX)
+    const word3RangeX = xStart;
+    const distanceToWord1 = Math.abs(word3RangeX - centerX);
+    if (distanceToWord1 <= 1) {
+        xStart = word3RangeX > centerX ? centerX + 2 : centerX - 2;
     }
-  }
+
+    for (let i = 0; i < word3.length; i++) {
+        const x = xStart;
+        const y = yStart + i;
+        const key = `${x},${y}`;
+        if (layout[key] && layout[key] !== word3[i]) return null;
+        layout[key] = word3[i];
+        if (i === inter23.w2Index) connected = true;
+    }
+}
 
   if (!connected) return null;
   return layout;
