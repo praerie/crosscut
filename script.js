@@ -10,14 +10,23 @@ function pickIntersectingTerms(terms) {
     const shuffled = terms.sort(() => 0.5 - Math.random());
     const [a, b, c] = shuffled;
 
-    const ab = findIntersection(a.term, b.term);
-    const ac = findIntersection(a.term, c.term);
-    const bc = findIntersection(b.term, c.term);
+    const permutations = [
+      [a.term, b.term, c.term],
+      [a.term, c.term, b.term],
+      [b.term, a.term, c.term],
+      [b.term, c.term, a.term],
+      [c.term, a.term, b.term],
+      [c.term, b.term, a.term]
+    ];
 
-    if (ab && (ac || bc)) return [a, b, c];
+    for (const [h, v, iWord] of permutations) {
+      const layout = buildGrid(h, v, iWord);
+      if (layout) return [{ term: h, clue: terms.find(t => t.term === h).clue },
+                          { term: v, clue: terms.find(t => t.term === v).clue },
+                          { term: iWord, clue: terms.find(t => t.term === iWord).clue }];
+    }
   }
 
-  // fallback
   return [
     { term: "*****", clue: "placeholder 1" },
     { term: "*****", clue: "placeholder 2" },
@@ -48,83 +57,88 @@ function findIntersection(word1, word2) {
   return null;
 }
 
-function buildGrid(w1, w2, w3) {
-  const sorted = [w1, w2, w3].sort((a, b) => b.length - a.length);
-  const word2 = sorted[0]; // horizontal
-  const word1 = sorted[1]; // vertical
-  const word3 = sorted[2]; // third to intersect
+function findNonAlphaChars(term) {
+    pass
+}
 
+function buildGrid(horizontal, vertical, intersecting) {
   const layout = {};
   const centerX = 7;
   const centerY = 7;
 
-  const inter12 = findIntersection(word1, word2);
-  if (!inter12) return null;
+  const interHV = findIntersection(vertical, horizontal);
+  if (!interHV) return null;
 
-  // place word1 vertically
-  for (let i = 0; i < word1.length; i++) {
-    const y = centerY - inter12.w1Index + i;
-    layout[`${centerX},${y}`] = word1[i];
+  const vertStartY = centerY - interHV.w1Index;
+  const horizStartX = centerX - interHV.w2Index;
+
+  const usedRows = new Set();
+  const usedCols = new Set();
+
+  // Place vertical
+  for (let i = 0; i < vertical.length; i++) {
+    const y = vertStartY + i;
+    layout[`${centerX},${y}`] = vertical[i];
+    usedCols.add(centerX);
   }
 
-  // place word2 horizontally
-  for (let i = 0; i < word2.length; i++) {
-    const x = centerX - inter12.w2Index + i;
+  // Place horizontal
+  for (let i = 0; i < horizontal.length; i++) {
+    const x = horizStartX + i;
     const y = centerY;
     const key = `${x},${y}`;
-    if (layout[key] && layout[key] !== word2[i]) return null;
-    layout[key] = word2[i];
+    if (layout[key] && layout[key] !== horizontal[i]) return null;
+    layout[key] = horizontal[i];
+    usedRows.add(centerY);
   }
 
-  const inter13 = findIntersection(word1, word3);
-  const inter23 = findIntersection(word2, word3);
-  let connected = false;
+  // Try intersecting with vertical
+  const interIV = findIntersection(vertical, intersecting);
+  if (interIV) {
+    const sharedY = vertStartY + interIV.w1Index;
+    let yStart = sharedY;
+    const xStart = centerX - interIV.w2Index;
 
-  if (inter13) {
-    const yOfShared = centerY - inter12.w1Index + inter13.w1Index;
-    let yStart = yOfShared;
-    const xStart = centerX - inter13.w2Index;
-
-    // check if full row of word3 is too close to word2 (horizontal at centerY)
-    const word3RangeY = yStart;
-    const distanceToWord2 = Math.abs(word3RangeY - centerY);
-    if (distanceToWord2 <= 1) {
-        yStart = word3RangeY < centerY ? centerY - 2 : centerY + 2;
+    if (Array.from(usedRows).some(y => Math.abs(y - yStart) <= 1)) {
+      yStart = yStart < centerY ? centerY - 2 : centerY + 2;
     }
 
-    for (let i = 0; i < word3.length; i++) {
-        const x = xStart + i;
-        const y = yStart;
-        const key = `${x},${y}`;
-        if (layout[key] && layout[key] !== word3[i]) return null;
-        layout[key] = word3[i];
-        if (i === inter13.w2Index) connected = true;
+    let connected = false;
+    for (let i = 0; i < intersecting.length; i++) {
+      const x = xStart + i;
+      const y = yStart;
+      const key = `${x},${y}`;
+      if (layout[key] && layout[key] !== intersecting[i]) return null;
+      layout[key] = intersecting[i];
+      if (i === interIV.w2Index) connected = true;
+    }
+    if (connected) return layout;
+  }
+
+  // Try intersecting with horizontal
+  const interIH = findIntersection(horizontal, intersecting);
+  if (interIH) {
+    const sharedX = horizStartX + interIH.w1Index;
+    let xStart = sharedX;
+    const yStart = centerY - interIH.w2Index;
+
+    if (Array.from(usedCols).some(x => Math.abs(x - xStart) <= 1)) {
+      xStart = xStart < centerX ? centerX - 2 : centerX + 2;
     }
 
-    } else if (inter23) {
-    const xOfShared = centerX - inter12.w2Index + inter23.w1Index;
-    let xStart = xOfShared;
-    const yStart = centerY - inter23.w2Index;
-
-    // check if full column of word3 is too close to word1 (vertical at centerX)
-    const word3RangeX = xStart;
-    const distanceToWord1 = Math.abs(word3RangeX - centerX);
-    if (distanceToWord1 <= 1) {
-        xStart = word3RangeX > centerX ? centerX + 2 : centerX - 2;
+    let connected = false;
+    for (let i = 0; i < intersecting.length; i++) {
+      const x = xStart;
+      const y = yStart + i;
+      const key = `${x},${y}`;
+      if (layout[key] && layout[key] !== intersecting[i]) return null;
+      layout[key] = intersecting[i];
+      if (i === interIH.w2Index) connected = true;
     }
+    if (connected) return layout;
+  }
 
-    for (let i = 0; i < word3.length; i++) {
-        const x = xStart;
-        const y = yStart + i;
-        const key = `${x},${y}`;
-        if (layout[key] && layout[key] !== word3[i]) return null;
-        layout[key] = word3[i];
-        if (i === inter23.w2Index) connected = true;
-    }
-}
-
-  if (!connected) return null;
-  return layout;
+  return null;
 }
 
 function renderGrid(layout) {
