@@ -147,10 +147,11 @@ function renderGrid(layout) {
   for (let y = minY; y <= maxY; y++) {
     for (let x = minX; x <= maxX; x++) {
       const cell = document.createElement('div');
-      cell.className = 'letter-cell';
+      
       const key = `${x},${y}`;
       if (layout[key]) {
         cell.textContent = layout[key];
+        cell.className = 'letter-cell';
       }
       container.appendChild(cell);
     }
