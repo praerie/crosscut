@@ -21,7 +21,6 @@ function pickIntersectingTerms(terms) {
   for (let i = 0; i < 3000; i++) {
     const shuffled = terms.sort(() => 0.5 - Math.random());
 
-    // try every 3-word combo
     for (let a = 0; a < shuffled.length; a++) {
       for (let b = 0; b < shuffled.length; b++) {
         if (b === a) continue;
@@ -34,11 +33,9 @@ function pickIntersectingTerms(terms) {
 
           if (vertical.length > MAX_VERTICAL_LENGTH) continue;
 
-          const layout = buildGrid(h1, h2, vertical); // horizontal1, horizontal2, vertical
-
+          const layout = buildGrid(h1, h2, vertical);
           if (!layout) continue;
 
-          // confirm all 3 words are actually in the layout
           const allTerms = [h1, h2, vertical];
           const inGrid = allTerms.every(term => {
             const letters = term.replace(/\s/g, "").split("");
@@ -57,7 +54,6 @@ function pickIntersectingTerms(terms) {
     }
   }
 
-  // fallback
   return [
     { term: "*****", clue: "placeholder 1" },
     { term: "*****", clue: "placeholder 2" },
@@ -72,7 +68,6 @@ function buildGrid(horizontal1, horizontal2, vertical) {
 
   const usedHorizontalRows = new Set();
 
-  // === 1. place vertical ===
   const inter1 = findIntersection(vertical, horizontal1);
   if (!inter1) return null;
 
@@ -83,50 +78,43 @@ function buildGrid(horizontal1, horizontal2, vertical) {
     layout[`${centerX},${y}`] = vertical[i];
   }
 
-  // === 2. place horizontal1 ===
   const horiz1Y = centerY;
   const horiz1StartX = centerX - inter1.w2Index;
 
   for (let i = 0; i < horizontal1.length; i++) {
     const x = horiz1StartX + i;
     const key = `${x},${horiz1Y}`;
-    const isIntersection = i === inter1.w2Index;
     const existing = layout[key];
-
     if (existing && existing !== horizontal1[i]) return null;
     layout[key] = horizontal1[i];
   }
 
   usedHorizontalRows.add(horiz1Y);
 
-  // === 3. try to place horizontal2 ===
   const inter2 = findIntersection(vertical, horizontal2);
   if (!inter2) return null;
 
   const horiz2Y = vertStartY + inter2.w1Index;
-
-  // enforce vertical spacing between horizontal rows
   for (const row of usedHorizontalRows) {
     const MIN_SPACING = 1;
     if (Math.abs(row - horiz2Y) <= MIN_SPACING && row !== horiz2Y) {
-      return null; // not enough buffer
+      return null;
     }
   }
 
   const horiz2StartX = centerX - inter2.w2Index;
 
+  if (usedHorizontalRows.has(horiz2Y)) return null;
+
   for (let i = 0; i < horizontal2.length; i++) {
     const x = horiz2StartX + i;
     const key = `${x},${horiz2Y}`;
-    const isIntersection = i === inter2.w2Index;
     const existing = layout[key];
-
     if (existing && existing !== horizontal2[i]) return null;
     layout[key] = horizontal2[i];
   }
 
   usedHorizontalRows.add(horiz2Y);
-
   return layout;
 }
 
@@ -155,7 +143,6 @@ function renderGrid(layout) {
       if (layout[key]) {
         const char = layout[key];
         cell.textContent = char;
-
         if (/[a-z]/i.test(char)) {
           cell.className = 'letter-cell';
         } else if (/\d/.test(char)) {
