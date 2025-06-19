@@ -49,17 +49,15 @@ function findIntersection(word1, word2) {
 }
 
 function buildGrid(w1, w2, w3) {
-  // sort so the longest word is used as horizontal (word2)
   const sorted = [w1, w2, w3].sort((a, b) => b.length - a.length);
   const word2 = sorted[0]; // horizontal
   const word1 = sorted[1]; // vertical
-  const word3 = sorted[2];
+  const word3 = sorted[2]; // third to intersect
 
   const layout = {};
   const centerX = 7;
   const centerY = 7;
 
-  // calculate intersection between vertical and horizontal
   const inter12 = findIntersection(word1, word2);
   if (!inter12) return null;
 
@@ -78,7 +76,6 @@ function buildGrid(w1, w2, w3) {
     layout[key] = word2[i];
   }
 
-  // try to place word3 intersecting either word1 or word2
   const inter13 = findIntersection(word1, word3);
   const inter23 = findIntersection(word2, word3);
   let connected = false;
@@ -88,7 +85,6 @@ function buildGrid(w1, w2, w3) {
     const yOfShared = centerY - inter12.w1Index + inter13.w1Index;
     let finalY = yOfShared;
 
-    // avoid overlapping with word2 (centerY)
     if (Math.abs(finalY - centerY) <= 1) {
       finalY = finalY < centerY ? centerY - 2 : centerY + 2;
     }
@@ -109,7 +105,6 @@ function buildGrid(w1, w2, w3) {
     const xOfShared = centerX - inter12.w2Index + inter23.w1Index;
     let finalX = xOfShared;
 
-    // avoid overlapping with word1 (centerX)
     if (Math.abs(finalX - centerX) <= 1) {
       finalX = finalX < centerX ? centerX - 2 : centerX + 2;
     }
