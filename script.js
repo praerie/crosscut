@@ -153,8 +153,16 @@ function renderGrid(layout) {
       const cell = document.createElement('div');
       const key = `${x},${y}`;
       if (layout[key]) {
-        cell.textContent = layout[key];
-        cell.className = 'letter-cell';
+        const char = layout[key];
+        cell.textContent = char;
+
+        if (/[a-z]/i.test(char)) {
+          cell.className = 'letter-cell';
+        } else if (/\d/.test(char)) {
+          cell.className = 'digit-cell';
+        } else {
+          cell.className = 'non-alpha-cell';
+        }
       }
       container.appendChild(cell);
     }
