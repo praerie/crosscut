@@ -1,32 +1,63 @@
-
 async function loadWords() {
   const res = await fetch('data/terms.json');
   const terms = await res.json();
   return terms;
 }
 
+function findIntersection(word1, word2) {
+  for (let i = 0; i < word1.length; i++) {
+    const char = word1[i];
+    const indexInWord2 = word2.indexOf(char);
+    if (indexInWord2 !== -1) {
+      return { w1Index: i, w2Index: indexInWord2 };
+    }
+  }
+  return null;
+}
+
 function pickIntersectingTerms(terms) {
+  const MAX_VERTICAL_LENGTH = 9;
+
   for (let i = 0; i < 3000; i++) {
     const shuffled = terms.sort(() => 0.5 - Math.random());
-    const [a, b, c] = shuffled;
 
-    const permutations = [
-      [a.term, b.term, c.term],
-      [a.term, c.term, b.term],
-      [b.term, a.term, c.term],
-      [b.term, c.term, a.term],
-      [c.term, a.term, b.term],
-      [c.term, b.term, a.term]
-    ];
+    // try every 3-word combo
+    for (let a = 0; a < shuffled.length; a++) {
+      for (let b = 0; b < shuffled.length; b++) {
+        if (b === a) continue;
+        for (let c = 0; c < shuffled.length; c++) {
+          if (c === a || c === b) continue;
 
-    for (const [h, v, iWord] of permutations) {
-      const layout = buildGrid(h, v, iWord);
-      if (layout) return [{ term: h, clue: terms.find(t => t.term === h).clue },
-                          { term: v, clue: terms.find(t => t.term === v).clue },
-                          { term: iWord, clue: terms.find(t => t.term === iWord).clue }];
+          const vertical = shuffled[a].term;
+          const h1 = shuffled[b].term;
+          const h2 = shuffled[c].term;
+
+          if (vertical.length > MAX_VERTICAL_LENGTH) continue;
+
+          const layout = buildGrid(h1, h2, vertical); // horizontal1, horizontal2, vertical
+
+          if (!layout) continue;
+
+          // confirm all 3 words are actually in the layout
+          const allTerms = [h1, h2, vertical];
+          const inGrid = allTerms.every(term => {
+            const letters = term.replace(/\s/g, "").split("");
+            return letters.every(l => Object.values(layout).includes(l));
+          });
+
+          if (!inGrid) continue;
+
+          return [
+            { term: h1, clue: terms.find(t => t.term === h1).clue },
+            { term: h2, clue: terms.find(t => t.term === h2).clue },
+            { term: vertical, clue: terms.find(t => t.term === vertical).clue }
+          ];
+        }
+      }
     }
   }
 
+  // fallback
   return [
     { term: "*****", clue: "placeholder 1" },
     { term: "*****", clue: "placeholder 2" },
@@ -34,111 +65,69 @@ function pickIntersectingTerms(terms) {
   ];
 }
 
-function displayClues(terms) {
-  document.getElementById('clue-1').textContent = 'Act I: ' + terms[0].clue;
-  document.getElementById('clue-2').textContent = 'Act II: ' + terms[1].clue;
-  document.getElementById('clue-3').textContent = 'Act III: ' + terms[2].clue;
-}
-
-function findIntersection(word1, word2) {
-  // loop through each character in the first word
-  for (let i = 0; i < word1.length; i++) {
-    const char = word1[i]; // get the current character from word1
-    const indexInWord2 = word2.indexOf(char); // check if that character exists in word2
-
-    // if the character is found in word2 (index is not -1)
-    if (indexInWord2 !== -1) {
-      // then return the indices where the match occurs in both words
-      return { w1Index: i, w2Index: indexInWord2 };
-    }
-  }
-
-  // if no matching character is found, return null
-  return null;
-}
-
-function findNonAlphaChars(term) {
-    pass
-}
-
-function buildGrid(horizontal, vertical, intersecting) {
+function buildGrid(horizontal1, horizontal2, vertical) {
   const layout = {};
   const centerX = 7;
   const centerY = 7;
 
-  const interHV = findIntersection(vertical, horizontal);
-  if (!interHV) return null;
+  const usedHorizontalRows = new Set();
 
-  const vertStartY = centerY - interHV.w1Index;
-  const horizStartX = centerX - interHV.w2Index;
+  // === 1. place vertical ===
+  const inter1 = findIntersection(vertical, horizontal1);
+  if (!inter1) return null;
 
-  const usedRows = new Set();
-  const usedCols = new Set();
+  const vertStartY = centerY - inter1.w1Index;
 
-  // Place vertical
   for (let i = 0; i < vertical.length; i++) {
     const y = vertStartY + i;
     layout[`${centerX},${y}`] = vertical[i];
-    usedCols.add(centerX);
   }
 
-  // Place horizontal
-  for (let i = 0; i < horizontal.length; i++) {
-    const x = horizStartX + i;
-    const y = centerY;
-    const key = `${x},${y}`;
-    if (layout[key] && layout[key] !== horizontal[i]) return null;
-    layout[key] = horizontal[i];
-    usedRows.add(centerY);
+  // === 2. place horizontal1 ===
+  const horiz1Y = centerY;
+  const horiz1StartX = centerX - inter1.w2Index;
+
+  for (let i = 0; i < horizontal1.length; i++) {
+    const x = horiz1StartX + i;
+    const key = `${x},${horiz1Y}`;
+    const isIntersection = i === inter1.w2Index;
+    const existing = layout[key];
+
+    if (existing && existing !== horizontal1[i]) return null;
+    layout[key] = horizontal1[i];
   }
 
-  // Try intersecting with vertical
-  const interIV = findIntersection(vertical, intersecting);
-  if (interIV) {
-    const sharedY = vertStartY + interIV.w1Index;
-    let yStart = sharedY;
-    const xStart = centerX - interIV.w2Index;
+  usedHorizontalRows.add(horiz1Y);
 
-    if (Array.from(usedRows).some(y => Math.abs(y - yStart) <= 1)) {
-      yStart = yStart < centerY ? centerY - 2 : centerY + 2;
-    }
+  // === 3. try to place horizontal2 ===
+  const inter2 = findIntersection(vertical, horizontal2);
+  if (!inter2) return null;
 
-    let connected = false;
-    for (let i = 0; i < intersecting.length; i++) {
-      const x = xStart + i;
-      const y = yStart;
-      const key = `${x},${y}`;
-      if (layout[key] && layout[key] !== intersecting[i]) return null;
-      layout[key] = intersecting[i];
-      if (i === interIV.w2Index) connected = true;
+  const horiz2Y = vertStartY + inter2.w1Index;
+
+  // enforce vertical spacing between horizontal rows
+  for (const row of usedHorizontalRows) {
+    const MIN_SPACING = 1;
+    if (Math.abs(row - horiz2Y) <= MIN_SPACING && row !== horiz2Y) {
+      return null; // not enough buffer
     }
-    if (connected) return layout;
   }
 
-  // Try intersecting with horizontal
-  const interIH = findIntersection(horizontal, intersecting);
-  if (interIH) {
-    const sharedX = horizStartX + interIH.w1Index;
-    let xStart = sharedX;
-    const yStart = centerY - interIH.w2Index;
+  const horiz2StartX = centerX - inter2.w2Index;
 
-    if (Array.from(usedCols).some(x => Math.abs(x - xStart) <= 1)) {
-      xStart = xStart < centerX ? centerX - 2 : centerX + 2;
-    }
+  for (let i = 0; i < horizontal2.length; i++) {
+    const x = horiz2StartX + i;
+    const key = `${x},${horiz2Y}`;
+    const isIntersection = i === inter2.w2Index;
+    const existing = layout[key];
 
-    let connected = false;
-    for (let i = 0; i < intersecting.length; i++) {
-      const x = xStart;
-      const y = yStart + i;
-      const key = `${x},${y}`;
-      if (layout[key] && layout[key] !== intersecting[i]) return null;
-      layout[key] = intersecting[i];
-      if (i === interIH.w2Index) connected = true;
-    }
-    if (connected) return layout;
+    if (existing && existing !== horizontal2[i]) return null;
+    layout[key] = horizontal2[i];
   }
 
-  return null;
+  usedHorizontalRows.add(horiz2Y);
+
+  return layout;
 }
 
 function renderGrid(layout) {
@@ -146,7 +135,7 @@ function renderGrid(layout) {
   container.innerHTML = '';
 
   const coords = Object.keys(layout).map(key => key.split(',').map(Number));
-  const xs = coords.map(([x, _]) => x);
+  const xs = coords.map(([x]) => x);
   const ys = coords.map(([_, y]) => y);
   const minX = Math.min(...xs);
   const minY = Math.min(...ys);
@@ -159,11 +148,9 @@ function renderGrid(layout) {
   container.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
   container.style.gridTemplateRows = `repeat(${height}, 1fr)`;
 
-  // render crossword grid 
   for (let y = minY; y <= maxY; y++) {
     for (let x = minX; x <= maxX; x++) {
       const cell = document.createElement('div');
-      
       const key = `${x},${y}`;
       if (layout[key]) {
         cell.textContent = layout[key];
@@ -172,6 +159,12 @@ function renderGrid(layout) {
       container.appendChild(cell);
     }
   }
+}
+
+function displayClues(terms) {
+  document.getElementById('clue-1').textContent = 'Act I: ' + terms[0].clue;
+  document.getElementById('clue-2').textContent = 'Act II: ' + terms[1].clue;
+  document.getElementById('clue-3').textContent = 'Act III: ' + terms[2].clue;
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
