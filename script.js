@@ -136,23 +136,47 @@ function renderGrid(layout) {
   container.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
   container.style.gridTemplateRows = `repeat(${height}, 1fr)`;
 
+  const inputs = [];
+
   for (let y = minY; y <= maxY; y++) {
     for (let x = minX; x <= maxX; x++) {
       const cell = document.createElement('div');
+      cell.className = 'grid-cell';
       const key = `${x},${y}`;
+
       if (layout[key]) {
         const char = layout[key];
-        cell.textContent = char;
+
         if (/[a-z]/i.test(char)) {
-          cell.className = 'letter-cell';
-        } else if (/\d/.test(char)) {
-          cell.className = 'digit-cell';
+          const input = document.createElement('input');
+          input.setAttribute('maxlength', 1);
+          input.dataset.answer = char.toLowerCase();
+          input.className = 'input-cell';
+          input.dataset.x = x;
+          input.dataset.y = y;
+          inputs.push(input);
+          cell.appendChild(input);
         } else {
-          cell.className = 'non-alpha-cell';
+          cell.textContent = char;
+          if (/\d/.test(char)) {
+            cell.classList.add('digit-cell');
+          } else {
+            cell.classList.add('non-alpha-cell');
+          }
         }
       }
+
       container.appendChild(cell);
     }
+  }
+
+  for (let i = 0; i < inputs.length; i++) {
+    const input = inputs[i];
+    input.addEventListener('input', () => {
+      if (input.value && i + 1 < inputs.length) {
+        inputs[i + 1].focus();
+      }
+    });
   }
 }
 
