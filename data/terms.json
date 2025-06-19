@@ -208,5 +208,251 @@
     "clue": "a rig that allows animators to control where and how a character transforms in real time",
     "category": "rigging",
     "difficulty": 2
+  },
+  {
+    "term": "artifact",
+    "clue": "an unintended error or distortion in rendered imagery, often due to compression or lighting issues",
+    "category": "vfx",
+    "difficulty": 1
+  },
+  {
+    "term": "camera shake",
+    "clue": "a technique that simulates handheld motion to add realism or intensity to a shot",
+    "category": "cinema",
+    "difficulty": 1
+  },
+  {
+    "term": "compositing",
+    "clue": "combining multiple visual elements from different sources into a single image",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "composition",
+    "clue": "the visual arrangement of elements within a frame",
+    "category": "cinema",
+    "difficulty": 1
+  },
+  {
+    "term": "depth of field",
+    "clue": "the range in a shot that appears sharp, often used to draw focus",
+    "category": "cinema",
+    "difficulty": 2
+  },
+  {
+    "term": "extrusion",
+    "clue": "a modeling technique where a shape is extended to create depth",
+    "category": "modeling",
+    "difficulty": 2
+  },
+  {
+    "term": "flare",
+    "clue": "a visual effect that simulates light scattering from a bright source, often used for stylistic emphasis",
+    "category": "lighting",
+    "difficulty": 1
+  },
+  {
+    "term": "frame",
+    "clue": "a single still image in a sequence that makes up a moving picture",
+    "category": "cinema",
+    "difficulty": 1
+  },
+  {
+    "term": "frame rate",
+    "clue": "the number of frames displayed per second in a video or animation",
+    "category": "cinema",
+    "difficulty": 1
+  },
+  {
+    "term": "green screen",
+    "clue": "a background replacement technique using chroma keying to isolate subjects",
+    "category": "vfx",
+    "difficulty": 1
+  },
+  {
+    "term": "keying",
+    "clue": "isolating an element in a shot by removing a specific color range, usually for background replacement",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "maquette",
+    "clue": "a physical model used as a reference for creating digital characters or sets",
+    "category": "modeling",
+    "difficulty": 2
+  },
+  {
+    "term": "matchmove",
+    "clue": "the process of tracking a camera's movement so that CGI can be composited accurately",
+    "category": "vfx",
+    "difficulty": 3
+  },
+  {
+    "term": "matte painting",
+    "clue": "a digitally created or enhanced background used to extend or replace live footage",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "mesh",
+    "clue": "a collection of vertices, edges, and faces that defines a 3D object's shape",
+    "category": "modeling",
+    "difficulty": 1
+  },
+  {
+    "term": "motion blur",
+    "clue": "a visual effect that simulates streaking of moving objects between frames",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "motion tracking",
+    "clue": "detecting and replicating movement from live-action footage into 3D space",
+    "category": "vfx",
+    "difficulty": 3
+  },
+  {
+    "term": "multi-pass rendering",
+    "clue": "rendering a scene in separate layers (e.g. lighting, shadows) for compositing",
+    "category": "vfx",
+    "difficulty": 3
+  },
+  {
+    "term": "node",
+    "clue": "a modular unit used in node-based software to perform visual or data operations",
+    "category": "pipeline",
+    "difficulty": 2
+  },
+  {
+    "term": "noise",
+    "clue": "random variation in image brightness or color, often used to create texture",
+    "category": "texturing",
+    "difficulty": 1
+  },
+  {
+    "term": "parallax",
+    "clue": "a visual effect where objects at different depths move at different rates",
+    "category": "cinema",
+    "difficulty": 2
+  },
+  {
+    "term": "particle",
+    "clue": "a small point-based element used to simulate effects like smoke, fire, or dust",
+    "category": "simulation",
+    "difficulty": 2
+  },
+  {
+    "term": "perspective",
+    "clue": "the technique used to represent three-dimensional objects on a two-dimensional plane",
+    "category": "cinema",
+    "difficulty": 1
+  },
+  {
+    "term": "photogrammetry",
+    "clue": "the process of creating 3D models from multiple photographs of an object or environment",
+    "category": "vfx",
+    "difficulty": 3
+  },
+  {
+    "term": "plate",
+    "clue": "the original footage shot on set, before visual effects are added",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "polygon",
+    "clue": "a flat, two-dimensional shape used as a basic unit in 3D modeling",
+    "category": "modeling",
+    "difficulty": 1
+  },
+  {
+    "term": "previsualization",
+    "clue": "creating rough versions of shots or sequences to plan visuals before production",
+    "category": "cinema",
+    "difficulty": 2
+  },
+  {
+    "term": "pre-production",
+    "clue": "the planning phase of a film or animation project, including concept art and storyboarding",
+    "category": "pipeline",
+    "difficulty": 1
+  },
+  {
+    "term": "post-production",
+    "clue": "the stage after filming where editing, VFX, and audio are finalized",
+    "category": "pipeline",
+    "difficulty": 1
+  },
+  {
+    "term": "render farm",
+    "clue": "a network of computers used collectively to speed up rendering tasks",
+    "category": "rendering",
+    "difficulty": 2
+  },
+  {
+    "term": "resolution",
+    "clue": "the number of pixels in an image, determining its visual detail",
+    "category": "rendering",
+    "difficulty": 1
+  },
+  {
+    "term": "RGB",
+    "clue": "a color model using red, green, and blue light to create a full spectrum of colors in digital imaging",
+    "category": "rendering",
+    "difficulty": 1
+  },
+  {
+    "term": "rotoscoping",
+    "clue": "tracing over live-action footage to create animated sequences or isolate elements",
+    "category": "vfx",
+    "difficulty": 2
+  },
+  {
+    "term": "SIGGRAPH",
+    "clue": "an annual conference showcasing innovations in computer graphics and interactive techniques, including VFX breakthroughs",
+    "category": "community",
+    "difficulty": 3
+  },
+  {
+    "term": "DevDays",
+    "clue": "a virtual hackathon by the Academy Software Foundation that guides first-time contributors through their first open-source VFX or animation project task, with mentorship from maintainers",
+    "category": "community",
+    "difficulty": 3
+  },
+  {
+    "term": "storyboarding",
+    "clue": "drawing sequences of shots to visually plan out a scene or film",
+    "category": "cinema",
+    "difficulty": 1
+  },
+  {
+    "term": "technical director",
+    "clue": "a specialist responsible for solving technical issues in the production pipeline",
+    "category": "pipeline",
+    "difficulty": 2
+  },
+  {
+    "term": "transcoding",
+    "clue": "converting digital media files from one format or compression to another",
+    "category": "pipeline",
+    "difficulty": 2
+  },
+  {
+    "term": "UV mapping",
+    "clue": "the process of projecting a 2D image texture onto a 3D model's surface using coordinates",
+    "category": "texturing",
+    "difficulty": 2
+  },
+  {
+    "term": "VEX",
+    "clue": "a scripting language used in Houdini to control simulations, shaders, and procedural effects",
+    "category": "tool",
+    "difficulty": 3
+  },
+  {
+    "term": "voxel",
+    "clue": "a volumetric pixel, used to represent 3D data in simulations or medical imaging",
+    "category": "modeling",
+    "difficulty": 2
   }
 ]
