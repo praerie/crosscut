@@ -168,18 +168,6 @@
     "difficulty": 3
   },
   {
-    "term": "bump roughness mapping",
-    "clue": "a method to preserve texture detail at different distances by simulating surface roughness",
-    "category": "texturing",
-    "difficulty": 2
-  },
-  {
-    "term": "continuous collision detection",
-    "clue": "a system that helps cloth avoid intersecting with complex skeletons in real time",
-    "category": "simulation",
-    "difficulty": 3
-  },
-  {
     "term": "3d uv-scaling",
     "clue": "a technique that preserves cloth texture detail during stretching and compression",
     "category": "texturing",
