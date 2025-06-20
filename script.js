@@ -190,7 +190,7 @@ function buildGrid(horizontal1, horizontal2, vertical) {
 let currentDirection = null;
 let typingStarted = false;
 
-// renders the crossword grid to the DOM
+// renders crossword grid to the DOM
 function renderGrid(layout) {
   const container = document.getElementById('crossword-container');
   container.innerHTML = '';
